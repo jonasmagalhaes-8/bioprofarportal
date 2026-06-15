@@ -1,32 +1,30 @@
-import { defineConfig } from 'vite'
-import path from 'path'
-import tailwindcss from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react'
-
-
-function figmaAssetResolver() {
-  return {
-    name: 'figma-asset-resolver',
-    resolveId(id) {
-      if (id.startsWith('figma:asset/')) {
-        const filename = id.replace('figma:asset/', '')
-        return path.resolve(__dirname, 'src/assets', filename)
-      }
-    },
-  }
-}
+import { defineConfig } from 'vite';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
+import routify from '@roxi/routify/vite-plugin';
 
 export default defineConfig({
   plugins: [
-    figmaAssetResolver(),
-    // The React and Tailwind plugins are both required for Make, even if
-    // Tailwind is not being actively used – do not remove them
-    react(),
-    tailwindcss(),
+    routify({
+      routesDir: {
+        default: 'src/routes',
+      },
+    }),
+    svelte({
+      compilerOptions: {
+        customElement: false,
+      },
+    }),
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src/app'),
+      $models: '/src/models',
+      $controllers: '/src/controllers',
+      $services: '/src/services',
+      $components: '/src/components',
+      $stores: '/src/stores',
     },
   },
-})
+  server: {
+    port: 5173,
+  },
+});

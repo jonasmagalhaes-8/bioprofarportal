@@ -1,0 +1,8 @@
+/
+/artigos
+/artigos/index
+/index
+/inicio
+/inicio/index
+/sobre
+/sobre/index
